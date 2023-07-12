@@ -2,6 +2,7 @@ package hello.core.order;
 
 import hello.core.discount.DiscountPolicy;
 import hello.core.discount.FixDiscountPolicy;
+import hello.core.discount.RateDiscountPolicy;
 import hello.core.member.Member;
 import hello.core.member.MemberRepository;
 import hello.core.member.MemoryMemberRepository;
@@ -9,7 +10,12 @@ import hello.core.member.MemoryMemberRepository;
 public class OrderServiceImpl implements OrderService{
 
     private final MemberRepository memberRepository = new MemoryMemberRepository();
-    private final DiscountPolicy discountPolicy = new FixDiscountPolicy();
+//    private final DiscountPolicy discountPolicy = new FixDiscountPolicy(); // fix 구현체 의존
+//    private final DiscountPolicy discountPolicy = new RateDiscountPolicy(); // rate 구현체 의존
+    // 위처럼 코딩하면 정책 변경에 따라 할인정책을 호출하는 클라이언트의 코드가 변경됨 -> ocp, dip 위배
+    // 아래처럼 인터페이스에만 의존해야함 but 구현체가 없는데??
+    // 누군가 클라이언트인 OrderServiceImpl 클래스에 DiscountPolicy 구현 객체를 대신 생성 주입 해줘야함!!
+    private DiscountPolicy discountPolicy;
 
     @Override
     public Order createOrder(Long memberId, String itemName, int itemPrice) {
