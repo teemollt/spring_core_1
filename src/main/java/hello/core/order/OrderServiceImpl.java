@@ -9,13 +9,21 @@ import hello.core.member.MemoryMemberRepository;
 
 public class OrderServiceImpl implements OrderService{
 
-    private final MemberRepository memberRepository = new MemoryMemberRepository();
-//    private final DiscountPolicy discountPolicy = new FixDiscountPolicy(); // fix 구현체 의존
-//    private final DiscountPolicy discountPolicy = new RateDiscountPolicy(); // rate 구현체 의존
-    // 위처럼 코딩하면 정책 변경에 따라 할인정책을 호출하는 클라이언트의 코드가 변경됨 -> ocp, dip 위배
-    // 아래처럼 인터페이스에만 의존해야함 but 구현체가 없는데??
-    // 누군가 클라이언트인 OrderServiceImpl 클래스에 DiscountPolicy 구현 객체를 대신 생성 주입 해줘야함!!
-    private DiscountPolicy discountPolicy;
+//    private final MemberRepository memberRepository = new MemoryMemberRepository(); // 1.구현체 직접의존
+    private final MemberRepository memberRepository;
+//    private final DiscountPolicy discountPolicy = new FixDiscountPolicy(); // 1. fix 구현체 의존
+//    private final DiscountPolicy discountPolicy = new RateDiscountPolicy(); // 1. rate 구현체 의존
+    // 2. 위처럼 코딩하면 정책 변경에 따라 할인정책을 호출하는 클라이언트의 코드가 변경됨 -> ocp, dip 위배
+    // 2. 아래처럼 인터페이스에만 의존해야함 but 구현체가 없는데??
+    // 2. 누군가 클라이언트인 OrderServiceImpl 클래스에 DiscountPolicy 구현 객체를 대신 생성 주입 해줘야함!!
+    private final DiscountPolicy discountPolicy;
+
+    // 2. 생성자로 구현체를 주입 받음 (주입은 AppConfig에서)
+    //          => OrderServiceImpl(지금 이 클래스) 입장에선 어떤 구현체가 들어올지 전혀 알지 못함.(dip지킴)
+    public OrderServiceImpl(MemberRepository memberRepository, DiscountPolicy discountPolicy) {
+        this.memberRepository = memberRepository;
+        this.discountPolicy = discountPolicy;
+    }
 
     @Override
     public Order createOrder(Long memberId, String itemName, int itemPrice) {
