@@ -7,22 +7,30 @@ import hello.core.member.MemberServiceImpl;
 import hello.core.order.Order;
 import hello.core.order.OrderService;
 import hello.core.order.OrderServiceImpl;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 public class OrderApp {
 
     public static void main(String[] args) {
-        //MemberApp에서와 같은 과정 해당 클래스 주석 참고
+        // 1. MemberApp에서와 같은 과정 해당 클래스 주석 참고
 //        MemberService memberService = new MemberServiceImpl();
 //        OrderService orderService = new OrderServiceImpl();
-        AppConfig appConfig = new AppConfig();
-        MemberService memberService = appConfig.memberService();
-        OrderService orderService = appConfig.orderService();
+        // 2. AppConfig를 통한 DI
+//        AppConfig appConfig = new AppConfig();
+//        MemberService memberService = appConfig.memberService();
+//        OrderService orderService = appConfig.orderService();
+
+        // 3. Spring Container를 통한 DI
+        ApplicationContext applicationContext = new AnnotationConfigApplicationContext(AppConfig.class);
+        MemberService memberService = applicationContext.getBean("memberService", MemberService.class);
+        OrderService orderService = applicationContext.getBean("orderService", OrderService.class);
 
         Long memberid = 1L;
         Member member = new Member(memberid, "memberA", Grade.VIP);
         memberService.join(member);
 
-        Order order = orderService.createOrder(memberid, "itemA", 10000);
+        Order order = orderService.createOrder(memberid, "itemA", 20000);
 
         System.out.println("order = " + order);
         System.out.println("order.calculatePrice() = " + order.calculatePrice());
