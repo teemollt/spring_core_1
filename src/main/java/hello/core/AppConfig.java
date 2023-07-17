@@ -19,6 +19,7 @@ import org.springframework.context.annotation.Configuration;
 //@Configuration , @Bean 어노테이션 붙이기 전/후 차이
 // 어플리케이션 구성,설정 정보를 담당하는 클래스에 사용하는 어노테이션 해당 클래스의 모든 메서드에 @Bean 달아줘
 // 그러면 메서드들이 "스프링 컨테이너"에 등록됨!
+// 스프링은 빈을 생성하고, 의존관계를 주입하는 단계가 나누어져있음. 아래와 같이 등록하면 이게 한번이 수행되는거처럼 보임..
 @Configuration  // 어플리케이션 구성,설정 정보를 담당하는 클래스에 사용하는 어노테이션 해당 클래스의 모든 메서드에 @Bean 달아줘
 public class AppConfig {
 /*
@@ -35,6 +36,7 @@ public class AppConfig {
 //        return new OrderServiceImpl(new MemoryMemberRepository(), new FixDiscountPolicy());
 //    }
 
+    // Bean 이름은 절대 중복되면 안됨!!
     @Bean //  "스프링 컨테이너"에 등록!
     public MemberService memberService() {
         return new MemberServiceImpl(memberRepository());
