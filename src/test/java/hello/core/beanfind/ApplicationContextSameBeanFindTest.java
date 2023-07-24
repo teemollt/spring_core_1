@@ -19,6 +19,10 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class ApplicationContextSameBeanFindTest {
 
+    // 최상위에 BeanFactory 인터페이스, ApplicationContext 인터페이스는 BeanFactory 외에
+    // 다른 부가 기능을 위한 인터페이스들도 상속받고 있음. 아래와 같이.
+    // public interface ApplicationContext extends EnvironmentCapable, ListableBeanFactory, HierarchicalBeanFactory,
+    //		MessageSource, ApplicationEventPublisher, ResourcePatternResolver
     AnnotationConfigApplicationContext ac = new AnnotationConfigApplicationContext(SameBeanConfig.class);
 
 
