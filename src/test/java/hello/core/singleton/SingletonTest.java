@@ -5,6 +5,8 @@ import hello.core.member.MemberService;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 public class SingletonTest {
 
@@ -54,5 +56,34 @@ public class SingletonTest {
         Assertions.assertThat(singletonService1).isSameAs(singletonService2);
         // isSameAs  ==> == 연산자 느낌
         // isEqualTo ==> String.equals() 느낌
+    }
+
+    @Test
+    @DisplayName("스프링 컨테이너와 싱글톤")
+    void springContainer() {
+//        AppConfig appConfig = new AppConfig();
+        // 직접 만들었던 appConfig 대신 스프링컨테이너 사용
+        ApplicationContext ac = new AnnotationConfigApplicationContext(AppConfig.class);
+
+        // 1. 조회 : 스프링빈으로 등록된 객체를 조회
+//        MemberService memberService1 = appConfig.memberService();
+        MemberService memberService1 = ac.getBean("memberService", MemberService.class);
+
+        // 2. 조회 : 스프링빈으로 등록된 객체를 조회
+//        MemberService memberService2 = appConfig.memberService();
+        MemberService memberService2 = ac.getBean("memberService", MemberService.class);
+
+        // 참조값이 같은 것을 확인 => 스프링컨테이너 사용시 자동으로 싱글톤으로 생성됨.
+        // ==> 클라이언트 요청이 있을때마다 객체 생성하지 않고 이미 만들어진 객체를 공유해 효율적으로 재사용!!
+        System.out.println("memberService1 = " + memberService1);
+        System.out.println("memberService2 = " + memberService2);
+        System.out.println("memberService1 == memberService2 ? " + (memberService1 == memberService2));
+
+        // memberService1 != memberService2
+        Assertions.assertThat(memberService1).isSameAs(memberService2);
+
+        /* 참고
+        스프링의 기본 빈 등록 방식은 싱글톤, but 요청할때마다 새로운 객체를 생성해 반환하는 기능도 제공함! (아주 예외적인 경우에 사용..)
+         */
     }
 }
