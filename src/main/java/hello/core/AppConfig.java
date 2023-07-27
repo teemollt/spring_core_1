@@ -36,9 +36,17 @@ public class AppConfig {
 //        return new OrderServiceImpl(new MemoryMemberRepository(), new FixDiscountPolicy());
 //    }
 
+    /* @Configuration 관련 내용
+        @Bean memberService -> memberRepository() -> new MemoryMemberRepository
+        @Bean orderService -> memberRepository() -> new MemoryMemberRepository
+        서로 다른 서비스에서 MemoryMemberRepository 객체가 두번 생성되는데?
+        싱글톤 패턴이 깨진것 아닌지?? 스프링은 이를 어떻게 해결하는지?? Test 만들어서 확인.
+     */
+
     // Bean 이름은 절대 중복되면 안됨!!
     @Bean //  "스프링 컨테이너"에 등록!
     public MemberService memberService() {
+
         return new MemberServiceImpl(memberRepository());
     }
 

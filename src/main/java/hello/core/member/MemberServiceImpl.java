@@ -24,4 +24,7 @@ public class MemberServiceImpl implements MemberService{
     public Member findMember(Long memberId) {
         return memberRepository.findById(memberId);
     }
+
+    // @Configuration에서 싱글톤 유지 관련 Test 용도
+    public Mem
 }
