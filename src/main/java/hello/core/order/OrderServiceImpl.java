@@ -38,4 +38,9 @@ public class OrderServiceImpl implements OrderService{
         // 마지막으로 최종 생성된 주문을 반환
         return new Order(memberId, itemName, itemPrice, discountPrice);
     }
+
+    // @Configuration에서 싱글톤 유지 관련 Test 용도
+    public MemberRepository getMemberRepository() {
+        return memberRepository;
+    }
 }

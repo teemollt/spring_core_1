@@ -26,5 +26,7 @@ public class MemberServiceImpl implements MemberService{
     }
 
     // @Configuration에서 싱글톤 유지 관련 Test 용도
-    public Mem
+    public MemberRepository getMemberRepository() {
+        return memberRepository;
+    }
 }
