@@ -58,7 +58,11 @@ public class AppConfig {
         call AppConfig.orderService
         이렇게만 됨.
 
+        비밀은 @Configuration에 있음!! -> ConfigurationSingletonTest에서 추가로 알아보자..
 
+        정리하자면
+        @Bean만 사용해도 스프링 빈으로 등록되지만 싱글톤 보장X
+        -> 스프링 설정 정보는 항상 @Configuration을 사용하자! -> 싱글톤 보장O
      */
 
     // Bean 이름은 절대 중복되면 안됨!!

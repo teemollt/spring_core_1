@@ -6,7 +6,10 @@ import hello.core.discount.RateDiscountPolicy;
 import hello.core.member.Member;
 import hello.core.member.MemberRepository;
 import hello.core.member.MemoryMemberRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
+@Component
 public class OrderServiceImpl implements OrderService{
 
 //    private final MemberRepository memberRepository = new MemoryMemberRepository(); // 1.구현체 직접의존
@@ -20,6 +23,8 @@ public class OrderServiceImpl implements OrderService{
 
     // 2. 생성자로 구현체를 주입 받음 (주입은 AppConfig에서)
     //          => OrderServiceImpl(지금 이 클래스) 입장에선 어떤 구현체가 들어올지 전혀 알지 못함.(dip지킴)
+    // 3. 이제는 AppConfig가 아니라 Autowired로 자동으로 주입
+    @Autowired
     public OrderServiceImpl(MemberRepository memberRepository, DiscountPolicy discountPolicy) {
         this.memberRepository = memberRepository;
         this.discountPolicy = discountPolicy;
