@@ -1,5 +1,8 @@
 package hello.core;
 
+import hello.core.member.MemberRepository;
+import hello.core.member.MemoryMemberRepository;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.FilterType;
@@ -13,13 +16,23 @@ import org.springframework.context.annotation.FilterType;
         // 권장 : 패키지 위치 지정하지 않고 설정 정보 클래스의 위치를 프로젝트 최상단에 두는것. 스프링부트 기본방식
         // -> 스프링부트 사용시 스프링부트 대표 시작 정보 @SpringBootApplication 을 이 프로젝트 시작 루트 위치에 두는 것이 관례
         // 그리고 이 안에 @ComponentScan이 들어있다.
-        basePackages = "hello.core.member",
+//        basePackages = "hello.core.member",
         //excludeFilters로 설정된건 빼고 스프링빈 등록
         //@Configuration이 붙은 설정정보도 자동으로 등록되므로 빼줘야 충돌 X(예제코드 남겨놓기위함)
         //( @Configuration도 소스코드 까보면 @Component 에노테이션 붙어있어서 자동등록됨 )
         excludeFilters = @ComponentScan.Filter(type = FilterType.ANNOTATION, classes = Configuration.class)
 )
 public class AutoAppConfig {
+
+    // 이미 자동으로 등록된 스프링빈과 같은 이름으로 스프링빈을 수동으로 등록한다면?
+    // 스프링 상으로는 수동빈이 자동빈을 오버라이딩 하면서 에러 없이 실행됨 그래서 테스트는 통과되는데..
+    // 하지만 스프링부트는 최근 오버라이딩이 아닌 에러를 띄우는 방식으로 기본값을 변경하였음.
+    // 그래서 스프링부트 @SpringBootApplication 메인 메서드 실행해보면 에러 남
+    // 이는 스프링부트 설정 allow-bean-definition-overriding=true로 바꾸면 에러 안뜸.. 근데 에러띄우는게 나음.
+//    @Bean(name = "memoryMemberRepository")
+//    MemberRepository memberRepository() {
+//        return new MemoryMemberRepository();
+//    }
 }
 
     /*

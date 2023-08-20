@@ -26,6 +26,8 @@ public class OrderServiceImpl implements OrderService{
     // 3. 이제는 AppConfig가 아니라 Autowired로 자동으로 주입
     @Autowired
     public OrderServiceImpl(MemberRepository memberRepository, DiscountPolicy discountPolicy) {
+        System.out.println("memberRepository = " + memberRepository);
+        System.out.println("discountPolicy = " + discountPolicy);
         this.memberRepository = memberRepository;
         this.discountPolicy = discountPolicy;
     }
