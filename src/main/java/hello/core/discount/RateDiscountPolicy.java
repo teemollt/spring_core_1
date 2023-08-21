@@ -3,9 +3,13 @@ package hello.core.discount;
 import hello.core.member.Grade;
 import hello.core.member.Member;
 import hello.core.order.Order;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Component;
 
 @Component
+@Qualifier("mainDiscountPolicy") // Qualifier 매칭
+//@Primary 사용시 DiscountPolicy 타입의 여러 빈이 존재할 시 해당 빈을 autowired할때 최우선적으로 매칭
 public class RateDiscountPolicy implements DiscountPolicy{
 
     private int discountPercent = 10;

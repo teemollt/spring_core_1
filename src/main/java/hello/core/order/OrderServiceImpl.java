@@ -6,10 +6,13 @@ import hello.core.discount.RateDiscountPolicy;
 import hello.core.member.Member;
 import hello.core.member.MemberRepository;
 import hello.core.member.MemoryMemberRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
 @Component
+//@RequiredArgsConstructor // final이 붙은 필드값을 초기화해주는 생성자를 따로 코드없이 만들어주는 lombok 기능
 public class OrderServiceImpl implements OrderService{
 
 //    private final MemberRepository memberRepository = new MemoryMemberRepository(); // 1.구현체 직접의존
@@ -24,8 +27,10 @@ public class OrderServiceImpl implements OrderService{
     // 2. 생성자로 구현체를 주입 받음 (주입은 AppConfig에서)
     //          => OrderServiceImpl(지금 이 클래스) 입장에선 어떤 구현체가 들어올지 전혀 알지 못함.(dip지킴)
     // 3. 이제는 AppConfig가 아니라 Autowired로 자동으로 주입
+    // 4. lombok @RequiredArgsConstructor 로 대체 가능
+    // 5. @Qualifier 사용 txt 참고 (DiscountPolicy 타입의 스프링빈이 2개인 경우 해결법)
     @Autowired
-    public OrderServiceImpl(MemberRepository memberRepository, DiscountPolicy discountPolicy) {
+    public OrderServiceImpl(MemberRepository memberRepository, @Qualifier("mainDiscountPolicy") DiscountPolicy discountPolicy) {
         System.out.println("memberRepository = " + memberRepository);
         System.out.println("discountPolicy = " + discountPolicy);
         this.memberRepository = memberRepository;

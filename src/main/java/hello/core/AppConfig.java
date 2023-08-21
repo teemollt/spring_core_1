@@ -86,6 +86,7 @@ public class AppConfig {
 
         System.out.println("call AppConfig.orderService");
         return new OrderServiceImpl(memberRepository(), discountPolicy());
+//        return null;
     }
 
     // 할인 정책을 바꾸려면 이거만 수정하면됨
