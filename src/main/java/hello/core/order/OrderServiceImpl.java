@@ -1,5 +1,6 @@
 package hello.core.order;
 
+import hello.core.annotation.MainDiscountPolicy;
 import hello.core.discount.DiscountPolicy;
 import hello.core.discount.FixDiscountPolicy;
 import hello.core.discount.RateDiscountPolicy;
@@ -30,7 +31,10 @@ public class OrderServiceImpl implements OrderService{
     // 4. lombok @RequiredArgsConstructor 로 대체 가능
     // 5. @Qualifier 사용 txt 참고 (DiscountPolicy 타입의 스프링빈이 2개인 경우 해결법)
     @Autowired
-    public OrderServiceImpl(MemberRepository memberRepository, @Qualifier("mainDiscountPolicy") DiscountPolicy discountPolicy) {
+    public OrderServiceImpl(MemberRepository memberRepository,
+//                            @Qualifier("mainDiscountPolicy") DiscountPolicy discountPolicy
+                            @MainDiscountPolicy DiscountPolicy discountPolicy //Qualifier 대신 직접만든 어노테이션
+    ) {
         System.out.println("memberRepository = " + memberRepository);
         System.out.println("discountPolicy = " + discountPolicy);
         this.memberRepository = memberRepository;
