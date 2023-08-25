@@ -21,7 +21,9 @@ public class BeanLifeCycleTest {
     @Configuration
     static class LifeCycleConfig {
 
-        @Bean
+        // 빈 등록시 initMethod, destroyMethod 설정해주면 설정한 이름으로 초기화, 소멸 동작하는 메서드 사용가능
+//      @Bean(initMethod = "init", destroyMethod = "close")
+        @Bean //  빈에서 직접 메서드에 어노테이션 달아주는 방법으로 사용하면되기때문에 위처럼 따로 설정 안해줘도됨.
         public NetworkClient networkClient() {
             NetworkClient networkClient = new NetworkClient();
             networkClient.setUrl("http://hello-spring.dev");

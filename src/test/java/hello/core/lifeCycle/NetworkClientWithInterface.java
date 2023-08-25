@@ -1,15 +1,14 @@
 package hello.core.lifeCycle;
 
+import org.springframework.beans.factory.DisposableBean;
+import org.springframework.beans.factory.InitializingBean;
 
-import javax.annotation.PostConstruct;
-import javax.annotation.PreDestroy;
-
-// 메서드를 사용한 초기화, 소멸
-public class NetworkClient{
+// lifeCycle 테스트를 위한.. 다른 방식 테스트 위해서 WithInterFace로 이름변경
+public class NetworkClientWithInterface implements InitializingBean, DisposableBean {
 
     private String url;
 
-    public NetworkClient() {
+    public NetworkClientWithInterface() {
         System.out.println("생성자 호출, url = " + url);
 //        connect();
 //        call("초기화 연결 메시지");
@@ -34,20 +33,17 @@ public class NetworkClient{
         System.out.println("close: " + url);
     }
 
-    // config에서 Bean등록할때 설정을 통해 메서드 사용할 수 있게 만들어주면
-    // 아래 메서드로 초기화 가능(BeanLifeCycleTest 참고)
-    @PostConstruct // 설정정보에서 설정해주지 않아도 여기서 메서드에 바로 어노테이션으로 사용가능!!
-    public void init() {
+    @Override // afterPropertiesSet = 의존관계 주입이 끝나면 바로 호출되는 메서드
+    public void afterPropertiesSet() throws Exception {
         // 여기서 아래 초기화 작업을 해줘야함.(InitializingBean 사용하는 경우)
-        System.out.println("NetworkClient.init");
+        System.out.println("afterPropertiesSet = " + url);
         connect();
         call("초기화 연결 메시지");
     }
 
-    // 마찬가지로 소멸 가능
-    @PreDestroy
-    public void close(){
-        System.out.println("NetworkClient.close");
+    @Override   // 빈이 종료될때 호출되는 메서드
+    public void destroy() throws Exception {
+        System.out.println("destroy = " + url);
         disconnect();
     }
 }
